@@ -5,7 +5,10 @@ from experiment.exp_params import ExpParams
 import logging
 import torch
 
-class Eperiment:
+from data_utils.dataset import PhonemeDataset
+from data_utils.parser import parse_dataset
+
+class Experiment:
     def __init__(self,
                  params: ExpParams,
                  run_dir: Path,

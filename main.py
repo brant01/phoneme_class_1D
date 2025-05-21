@@ -1,9 +1,10 @@
 
 from pathlib import Path
-from experiment.experiment import Experiment
-from experiment.exp_params import ExpParams
-from utils.device import get_best_device
-from utils.logger import create_logger
+from src.experiment.experiment import Experiment
+from src.experiment.exp_params import ExpParams
+from src.utils.device import get_best_device
+from src.utils.logger import create_logger
+from typing import Literal
 
 import typer
 
@@ -13,8 +14,8 @@ app = typer.Typer()
 def run(
     config_path: Path = Path("configs/default.json"),
     job_name: str = "",
-    device: str = "auto",
-    mode: str = "train",
+    device_str: Literal["auto", "cuda", "mps", "cpu"] = "auto",
+    mode: Literal["train", "evaluate", "visualize"] = "train"
 ) -> None:
     """ Run experiment with given configuration."""
 
@@ -24,7 +25,8 @@ def run(
     run_dir.mkdir(parents=True, exist_ok=True)
 
     logger = create_logger(run_dir)
-    device = get_best_device(device_str=device, logger=logger)
+    device = get_best_device(device_str=device_str, 
+                             logger=logger)
 
     experiment = Experiment(
         params=params,

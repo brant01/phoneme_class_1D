@@ -41,8 +41,11 @@ class ExpParams(BaseModel):
 
     # === Training ===
     epochs: int = 100
-    batch_size: int = 16
+    batch_size: int = 2
     learning_rate: float = 3e-4
+    num_workers: int = 1
+    pin_memory: Optional[bool] = None
+    drop_last: bool = False
 
     # === Experiment control ===
     mode: Literal["train", "evaluate", "visualize"] = "train"

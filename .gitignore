@@ -1,10 +1,59 @@
-# Python-generated files
+# Byte-compiled / optimized / DLL files
 __pycache__/
+*.py[cod]
+*$py.class
 *.py[oc]
 build/
 dist/
 wheels/
 *.egg-info
 
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
 # Virtual environments
-.venv
+.venv/
+env/
+venv/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Environment variables
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+
+# Dataset directories
+data/
+datasets/
+
+# Model checkpoints
+checkpoints/
+models/
+
+# PyTorch Lightning cache
+lightning_logs/
+
+# VSCode settings
+.vscode/
+
+# Test results
+htmlcov/
+coverage.xml
+.cache/
+
+# Pyright/mypy
+.mypy_cache/
+.pyright/ 
+
+
+ 

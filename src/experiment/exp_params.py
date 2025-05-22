@@ -17,12 +17,13 @@ class ExpParams(BaseModel):
     max_length: Optional[int] = None  # Can be computed or fixed
 
     # === Dataset ===
-    n_augment: int = 1
+    n_augment: int = 2
     pad_strategy: Literal["random", "left", "right"] = "random"
 
     # === Transforms ===
     use_mfcc: bool = True
     use_log_mel: bool = False
+    use_wavelet: bool = False
     use_time_mask: bool = True
     use_freq_mask: bool = True
     use_noise: bool = True
@@ -46,6 +47,11 @@ class ExpParams(BaseModel):
     num_workers: int = 1
     pin_memory: Optional[bool] = None
     drop_last: bool = False
+
+    # === Model ===
+    embedding_dim: int = 128
+    use_attention: bool = True
+    temperature: float = 0.5
 
     # === Experiment control ===
     mode: Literal["train", "evaluate", "visualize"] = "train"

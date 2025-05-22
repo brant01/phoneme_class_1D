@@ -2,15 +2,11 @@ import torch
 from torch.utils.data import DataLoader
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
-from typing import Optional
-import logging
-
 
 def evaluate_latent_classification(
     model: torch.nn.Module,
     dataloader: DataLoader,
     device: torch.device,
-    logger: Optional[logging.Logger] = None,
 ) -> float:
     """
     Evaluates the quality of embeddings by training a simple classifier
@@ -44,8 +40,5 @@ def evaluate_latent_classification(
     preds = clf.predict(embeddings)
 
     acc = float(accuracy_score(labels, preds))
-
-    if logger:
-        logger.info(f"Diagnostic classifier accuracy: {acc:.4f}")
 
     return acc

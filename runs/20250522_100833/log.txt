@@ -1,0 +1,7 @@
+[2025-05-22 10:08:33] [INFO] Using device: cuda:0
+[2025-05-22 10:08:33] [INFO] Run directory: runs\20250522_100833
+[2025-05-22 10:08:33] [INFO] Starting training...
+[2025-05-22 10:08:33] [INFO] Found 126 usable audio files
+[2025-05-22 10:08:33] [INFO] Detected 38 unique phoneme labels: ['ada', 'apa', 'bi', 'bu', 'da', 'de', 'di', 'du', 'ege', 'ete', 'fa', 'fe', 'fi', 'fu', 'ga', 'ge', 'gi', 'gu', 'ibi', 'isi', 'ka', 'ke', 'ki', 'ku', 'pa', 'pe', 'pi', 'pu', 'sa', 'se', 'si', 'su', 'ta', 'te', 'ti', 'tu', 'ubu', 'uku']
+[2025-05-22 10:08:34] [INFO] --- Fold 1/5 ---
+[2025-05-22 10:08:35] [INFO] Epoch 1/50

@@ -81,7 +81,4 @@ def parse_dataset(
     label_map: Dict[str, int] = {label: idx for idx, label in enumerate(unique_labels)}
     int_labels: List[int] = [label_map[label] for label in string_labels]
 
-    log(f"Found {len(file_paths)} usable audio files")
-    log(f"Detected {len(label_map)} unique phoneme labels: {list(label_map.keys())}")
-
     return file_paths, int_labels, label_map, lengths

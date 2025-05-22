@@ -1,6 +1,8 @@
-from pydantic import BaseModel, Field
-from typing import Literal, Optional, List
+# src/experiment/exp_params.py
+
 from pathlib import Path
+from typing import Literal, Optional
+from pydantic import BaseModel
 import json
 from datetime import datetime
 
@@ -30,10 +32,8 @@ class ExpParams(BaseModel):
 
     time_mask_p: float = 0.5
     time_mask_param: int = 30
-
     freq_mask_p: float = 0.5
     freq_mask_param: int = 10
-
     noise_std: float = 0.005
     noise_p: float = 0.3
 
@@ -51,17 +51,19 @@ class ExpParams(BaseModel):
     # === Model ===
     embedding_dim: int = 128
     use_attention: bool = True
-
-    # === Contrastive Loss ===
     temperature: float = 0.07
+    loss_type: Literal["supervised", "ntxent"] = "supervised"
 
     # === Evaluation ===
     eval_classifier_every: int = 5
+
+    # === Cross-validation ===
     use_kfold: bool = True
     n_splits: int = 5
 
     # === Experiment control ===
     mode: Literal["train", "evaluate", "visualize"] = "train"
+    console_log_level: Literal["info", "debug"] = "info"
 
     def generate_run_id(self) -> str:
         return datetime.now().strftime("%Y%m%d_%H%M%S")

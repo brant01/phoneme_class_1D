@@ -2,10 +2,11 @@
 
 import torch
 import multiprocessing
-import os
 from experiment.exp_params import ExpParams
 from typing import Optional
-import platform
+import multiprocessing
+from torch import cuda
+import logging
 
 def get_optimal_num_workers(safety_margin: int = 2) -> int:
     """
@@ -32,20 +33,32 @@ def get_optimal_batch_size(device: torch.device, base_size: int = 4) -> int:
     else:
         return base_size  # CPU fallback
 
-def adjust_exp_params_for_system(params: ExpParams, device: torch.device) -> ExpParams:
-    """
-    Modify the experiment parameters in-place to optimize for the current system.
-    """
-    if params.batch_size <= 2:
-        params.batch_size = get_optimal_batch_size(device)
+def adjust_exp_params_for_system(params: ExpParams, 
+                                 device: torch.device, 
+                                 logger: Optional[logging.Logger] = None) -> ExpParams:
 
-    if params.num_workers <= 1:
-        params.num_workers = get_optimal_num_workers()
 
-    if params.pin_memory is None:
-        params.pin_memory = device.type == "cuda"
+    def log(msg): 
+        logger.debug(msg) if logger else print(msg)
+
+    log("Adjusting experiment parameters based on system resources...")
+
+    # Threading
+    num_cores = multiprocessing.cpu_count()
+    params.num_workers = min(4, num_cores - 1)
+    log(f"Detected CPU cores: {num_cores} -> num_workers set to {params.num_workers}")
+
+    # GPU memory (if applicable)
+    if device.type == "cuda":
+        mem_total = cuda.get_device_properties(device).total_memory / (1024**3)
+        log(f"GPU memory (GB): {mem_total:.2f}")
+
+    # Pin memory
+    params.pin_memory = device.type == "cuda"
+    log(f"Pin memory: {params.pin_memory}")
 
     return params
+
 
 def suggest_cluster_resources(params: ExpParams, model_size_gb: float = 1.5) -> dict:
     """

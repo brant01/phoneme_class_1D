@@ -1,34 +1,46 @@
-import logging
 from pathlib import Path
-from datetime import datetime
+import logging
+from typing import Literal
 
-def create_logger(log_dir: Path) -> logging.Logger:
+
+def create_logger(
+    log_dir: Path, console_log_level: Literal["info", "debug"] = "info"
+) -> logging.Logger:
     """
-    Create a logger that writes to both console and a timestamped log file.
+    Creates a logger that writes both info-level and debug-level logs to separate files,
+    and prints messages to the console at a configurable level.
 
     Args:
-        log_dir (Path): Directory where log file will be stored.
+        log_dir (Path): Directory where log files will be saved.
+        console_log_level (str): Level of log messages to print to console ("info" or "debug").
 
     Returns:
         logging.Logger: Configured logger instance.
     """
     log_dir.mkdir(parents=True, exist_ok=True)
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    log_file = log_dir / f"run_{timestamp}.log"
+    logger = logging.getLogger("experiment_logger")
+    logger.setLevel(logging.DEBUG)
+    logger.handlers.clear()
 
-    logger = logging.getLogger("phoneme_project")
-    logger.setLevel(logging.INFO)
-    logger.handlers.clear()  # Ensure clean handler state
+    # Formatter
+    formatter = logging.Formatter("[%(asctime)s] [%(levelname)s] %(message)s", "%Y-%m-%d %H:%M:%S")
 
-    formatter = logging.Formatter("[%(asctime)s] [%(levelname)s] %(message)s")
+    # File handler for INFO level and above
+    info_handler = logging.FileHandler(log_dir / "log_info.txt")
+    info_handler.setLevel(logging.INFO)
+    info_handler.setFormatter(formatter)
+    logger.addHandler(info_handler)
 
-    file_handler = logging.FileHandler(log_file)
-    file_handler.setFormatter(formatter)
+    # File handler for DEBUG level (everything)
+    debug_handler = logging.FileHandler(log_dir / "log_debug.txt")
+    debug_handler.setLevel(logging.DEBUG)
+    debug_handler.setFormatter(formatter)
+    logger.addHandler(debug_handler)
 
+    # Console handler
     console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.DEBUG if console_log_level == "debug" else logging.INFO)
     console_handler.setFormatter(formatter)
-
-    logger.addHandler(file_handler)
     logger.addHandler(console_handler)
 
     return logger

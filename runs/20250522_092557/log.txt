@@ -1,0 +1,21 @@
+[2025-05-22 09:25:57] [INFO] Using device: cuda:0
+[2025-05-22 09:25:57] [INFO] Run directory: runs\20250522_092557
+[2025-05-22 09:25:57] [INFO] Starting training...
+[2025-05-22 09:25:57] [INFO] Found 126 usable audio files
+[2025-05-22 09:25:57] [INFO] Detected 38 unique phoneme labels: ['ada', 'apa', 'bi', 'bu', 'da', 'de', 'di', 'du', 'ege', 'ete', 'fa', 'fe', 'fi', 'fu', 'ga', 'ge', 'gi', 'gu', 'ibi', 'isi', 'ka', 'ke', 'ki', 'ku', 'pa', 'pe', 'pi', 'pu', 'sa', 'se', 'si', 'su', 'ta', 'te', 'ti', 'tu', 'ubu', 'uku']
+[2025-05-22 09:25:57] [INFO] --- Fold 1/5 ---
+[2025-05-22 09:25:58] [INFO] Epoch 1/50
+[2025-05-22 09:26:15] [INFO] Epoch 1 completed | Avg Loss: 0.0851
+[2025-05-22 09:26:28] [INFO] Diagnostic classifier accuracy: 1.0000
+[2025-05-22 09:26:28] [INFO] Saved new best model with accuracy 1.0000
+[2025-05-22 09:26:28] [INFO] Epoch 2/50
+[2025-05-22 09:26:43] [INFO] Epoch 2 completed | Avg Loss: 0.1939
+[2025-05-22 09:26:56] [INFO] Diagnostic classifier accuracy: 1.0000
+[2025-05-22 09:26:56] [INFO] Epoch 3/50
+[2025-05-22 09:27:12] [INFO] Epoch 3 completed | Avg Loss: 0.0234
+[2025-05-22 09:27:27] [INFO] Diagnostic classifier accuracy: 1.0000
+[2025-05-22 09:27:27] [INFO] Epoch 4/50
+[2025-05-22 09:27:46] [INFO] Epoch 4 completed | Avg Loss: 0.1068
+[2025-05-22 09:28:01] [INFO] Diagnostic classifier accuracy: 1.0000
+[2025-05-22 09:28:01] [INFO] Epoch 5/50
+[2025-05-22 09:28:19] [INFO] Epoch 5 completed | Avg Loss: 0.2144

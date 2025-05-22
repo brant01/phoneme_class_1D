@@ -1,9 +1,9 @@
-# src/experiment/exp_params.py
 from pydantic import BaseModel, Field
 from typing import Literal, Optional, List
 from pathlib import Path
 import json
 from datetime import datetime
+
 
 class ExpParams(BaseModel):
     # === Paths ===
@@ -14,10 +14,10 @@ class ExpParams(BaseModel):
 
     # === Audio ===
     target_sr: int = 16000
-    max_length: Optional[int] = None  # Can be computed or fixed
+    max_length: Optional[int] = None
 
     # === Dataset ===
-    n_augment: int = 2
+    n_augment: int = 1
     pad_strategy: Literal["random", "left", "right"] = "random"
 
     # === Transforms ===
@@ -51,7 +51,14 @@ class ExpParams(BaseModel):
     # === Model ===
     embedding_dim: int = 128
     use_attention: bool = True
-    temperature: float = 0.5
+
+    # === Contrastive Loss ===
+    temperature: float = 0.07
+
+    # === Evaluation ===
+    eval_classifier_every: int = 5
+    use_kfold: bool = True
+    n_splits: int = 5
 
     # === Experiment control ===
     mode: Literal["train", "evaluate", "visualize"] = "train"

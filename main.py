@@ -36,7 +36,7 @@ if __name__ == "__main__":
         device="auto",
 
         # === Training ===
-        epochs=20,
+        epochs=10,
         batch_size=4,
         learning_rate=3e-4,
         num_workers=1,

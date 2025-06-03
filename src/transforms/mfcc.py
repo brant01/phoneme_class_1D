@@ -5,7 +5,7 @@ import torch.nn as nn
 class MFCC(nn.Module):
     def __init__(self,
                  sample_rate: int = 16000,
-                 n_mfcc: int = 13,
+                 n_mfcc: int = 40,
                  ) -> None:
        
         super().__init__()

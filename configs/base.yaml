@@ -1,0 +1,51 @@
+# Hydra configuration
+defaults:
+  - model: cnn_small
+  - data: augmentation
+  - system: ${detect_system:}
+  - _self_
+
+experiment:
+  name: phoneme_contrastive
+  seed: 42
+  run_dir: ${hydra:runtime.output_dir}
+
+data:
+  data_path: ${oc.env:PHONEME_DATA_PATH,data/raw/New Stimuli 9-8-2024}
+  target_sr: 16000
+  max_length_ms: 2000  # 2 seconds
+  train_split: 0.8
+  
+  # Contrastive learning settings
+  views_per_sample: 2  # Number of augmented views per audio file
+  classes_per_batch: 8  # Number of phoneme classes per batch
+  samples_per_class: 2  # Samples per class (can be from different speakers)
+
+model:
+  # Defined in model/*.yaml
+  
+training:
+  epochs: 100
+  learning_rate: 3e-4
+  weight_decay: 1e-4
+  warmup_epochs: 5
+  
+  # Contrastive loss settings
+  temperature: 0.5  # Higher for your approach
+  loss_type: supervised_contrastive
+  
+  # Evaluation
+  eval_every: 5
+  save_best: true
+  
+  # System-dependent (overridden by system/*.yaml)
+  batch_size: ???
+  num_workers: ???
+  mixed_precision: ???
+
+logging:
+  level: info
+  use_wandb: true
+  use_tensorboard: true
+  log_confusion_matrix: true
+  log_embeddings: true

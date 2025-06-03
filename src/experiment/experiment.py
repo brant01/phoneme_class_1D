@@ -12,6 +12,7 @@ from transforms.build_transforms import build_transforms
 from models.phoneme_net import PhonemeNet
 from models.losses import SupervisedContrastiveLoss
 from utils.evaluate_latent_classification import evaluate_latent_classification
+from utils.samplers import MultiViewBatchSampler
 
 from torch.utils.data import DataLoader, Subset
 from sklearn.model_selection import KFold
@@ -79,13 +80,18 @@ class Experiment:
             val_idx = train_idx[val_split:]
             train_idx = train_idx[:val_split]
 
+        train_labels = [dataset[i][1] for i in train_idx]
+        sampler = MultiViewBatchSampler(
+            labels=train_labels,
+            n_views=2,
+            n_classes_per_batch=self.params.batch_size // 2
+        )
+
         train_loader = DataLoader(
             Subset(dataset, train_idx),
-            batch_size=self.params.batch_size,
-            shuffle=True,
+            batch_sampler=sampler,
             num_workers=self.params.num_workers,
             pin_memory=bool(self.params.pin_memory),
-            drop_last=self.params.drop_last,
         )
 
         val_loader = DataLoader(
@@ -118,7 +124,12 @@ class Experiment:
         self.logger.debug(str(model))
 
         optimizer = torch.optim.Adam(model.parameters(), lr=self.params.learning_rate)
-        criterion = SupervisedContrastiveLoss(temperature=self.params.temperature)
+        
+        criterion = SupervisedContrastiveLoss(
+            temperature=self.params.temperature,
+            logger=self.logger
+        )
+
 
         self.logger.debug(f"Optimizer: Adam (lr={self.params.learning_rate})")
         self.logger.info(f"Loss function: SupervisedContrastiveLoss (temperature={self.params.temperature})")
@@ -138,8 +149,10 @@ class Experiment:
                 x, y = x.to(self.device), y.to(self.device)
                 optimizer.zero_grad()
                 embeddings = model(x)
+                self.logger.debug(f"Embeddings mean: {embeddings.mean().item():.4f}, std: {embeddings.std().item():.4f}")
                 loss = criterion(embeddings, y)
                 loss.backward()
+                self.logger.debug(f"Contrastive loss (batch): {loss.item():.6f}")
                 optimizer.step()
                 total_loss += loss.item()
 

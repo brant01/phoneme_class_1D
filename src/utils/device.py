@@ -31,12 +31,12 @@ def get_best_device(
         log_info(f"Found {device_count} CUDA device(s):")
 
         for i in range(device_count):
-            device_name = torch.cuda.get_device_name(i)
-            log_debug(f"  GPU {i}: {device_name}")
+            props = torch.cuda.get_device_properties(i)
+            log_debug(f"  GPU {i}: {props.name} | VRAM: {props.total_memory / (1024**3):.2f} GB")
 
-        preferred_idx = 0  # Default to first
-        preferred_name = torch.cuda.get_device_name(preferred_idx)
-        log_info(f"Selected NVIDIA GPU: {preferred_name}")
+        preferred_idx = 0
+        preferred_props = torch.cuda.get_device_properties(preferred_idx)
+        log_info(f"Selected NVIDIA GPU: {preferred_props.name}")
         return torch.device(f"cuda:{preferred_idx}")
 
     elif torch.backends.mps.is_available() and torch.backends.mps.is_built():

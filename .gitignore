@@ -35,9 +35,25 @@ logs/
 # Run data
 runs/
 
-# Dataset directories
-data/
-datasets/
+# Data - be specific!
+/data/               # Only ignore root data folder
+!/data/README.md     # But track a README explaining data structure
+
+
+# Experiments
+runs/
+outputs/
+logs/
+wandb/
+mlruns/
+
+# Model checkpoints
+*.pt
+*.pth
+*.ckpt
+
+# But track source code in src/datasets/
+# (no need to explicitly include, just don't ignore it)
 
 # Model checkpoints
 checkpoints/
